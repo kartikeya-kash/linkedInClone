@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 function Home() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function Home() {
   return (
     <>
       <h1>Home page feed page</h1>
+      <Navbar />
     </>
   );
 }
