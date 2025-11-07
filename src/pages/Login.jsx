@@ -6,8 +6,24 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Username: ${username}, Password: ${password}`);
+
+    const storedData = localStorage.getItem("userdata");
+
+    if (!storedData) {
+      alert("No user found! Please sign up first.");
+      return;
+    }
+
+    const user = JSON.parse(storedData);
+
+    if (username === user.email && password === user.password) {
+      alert("Login Successful! Welcome " + user.fullName);
+      localStorage.setItem("isAuthenticated", "true");
+    } else {
+      alert("Invalid Credentials");
+    }
   };
+
   return (
     <>
       <h1>Login Page</h1>
@@ -15,7 +31,7 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Email"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
