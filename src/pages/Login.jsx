@@ -1,8 +1,9 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ function Login() {
     if (username === user.email && password === user.password) {
       alert("Login Successful! Welcome " + user.fullName);
       localStorage.setItem("isAuthenticated", "true");
+      navigate("/home");
     } else {
       alert("Invalid Credentials");
     }
