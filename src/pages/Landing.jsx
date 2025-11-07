@@ -8,6 +8,10 @@ function Landing() {
       <button style={{ marginTop: "10px" }} onClick={() => navigate("/signup")}>
         Lets get started
       </button>
+      <br />
+      <button style={{ marginTop: "10px" }} onClick={() => navigate("/login")}>
+        Login Now!
+      </button>
     </>
   );
 }
