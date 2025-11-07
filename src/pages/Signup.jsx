@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function Signup() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -7,14 +7,20 @@ function Signup() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   return (
     <>
       <h1>Sign Up Page</h1>
 
       <form
         onSubmit={(e) => {
-          e.preventDefault(); // stop page reload
-          alert(formData.email);
+          e.preventDefault();
+          alert(
+            "Welcome " + formData.fullName + "! Your account has been created."
+          );
+          localStorage.setItem("userdata", JSON.stringify(formData));
+          navigate("/login");
         }}
       >
         <input
@@ -44,6 +50,8 @@ function Signup() {
         <br />
         <button type="submit">Sign Up</button>
       </form>
+
+      <button onClick={() => navigate("/login")}>Login instead</button>
     </>
   );
 }
