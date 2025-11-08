@@ -18,7 +18,9 @@ function Home() {
 
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:5004/posts");
+        const response = await fetch(
+          "https://linkedinclone-1-hcwg.onrender.com/posts"
+        );
         const data = await response.json();
         setPosts(data);
       } catch (error) {
@@ -32,7 +34,7 @@ function Home() {
   const handleLike = async (postId) => {
     try {
       const response = await fetch(
-        `http://localhost:5004/posts/${postId}/like`,
+        `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}/like`,
         { method: "PUT" }
       );
       const data = await response.json();
@@ -57,7 +59,7 @@ function Home() {
 
     try {
       const response = await fetch(
-        `http://localhost:5004/posts/${postId}/comment`,
+        `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}/comment`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

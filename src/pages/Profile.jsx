@@ -22,7 +22,9 @@ function Profile() {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5004/user/${email}`);
+        const response = await fetch(
+          `https://linkedinclone-1-hcwg.onrender.com/user/${email}`
+        );
         const data = await response.json();
         if (response.ok) setUser(data);
       } catch (error) {
@@ -33,7 +35,7 @@ function Profile() {
     const fetchUserPosts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5004/posts/user/${email}`
+          `https://linkedinclone-1-hcwg.onrender.com/posts/user/${email}`
         );
         const data = await response.json();
         if (response.ok) setPosts(data);
@@ -55,9 +57,12 @@ function Profile() {
   const handleDelete = async (postId) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
     try {
-      const response = await fetch(`http://localhost:5004/posts/${postId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (response.ok) {
         setPosts(posts.filter((post) => post._id !== postId));
       } else {
@@ -75,11 +80,14 @@ function Profile() {
 
   const handleSaveEdit = async (postId) => {
     try {
-      const response = await fetch(`http://localhost:5004/posts/${postId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: editContent }),
-      });
+      const response = await fetch(
+        `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: editContent }),
+        }
+      );
 
       if (response.ok) {
         const updated = await response.json();

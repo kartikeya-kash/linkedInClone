@@ -24,11 +24,14 @@ function Newpost() {
     }
 
     try {
-      const response = await fetch("http://localhost:5004/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ authorEmail, content }),
-      });
+      const response = await fetch(
+        "https://linkedinclone-1-hcwg.onrender.com/posts",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ authorEmail, content }),
+        }
+      );
 
       const data = await response.json();
 
