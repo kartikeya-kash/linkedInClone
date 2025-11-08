@@ -18,6 +18,10 @@ app.use(cors());
     });
 
 
+app.get('/test', (req, res) => {
+  res.send('server is running');
+});
+
     app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
