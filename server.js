@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import User from './User.js';
+import Post from './Post.js';
 
 const app = express();
 app.use(express.json());
@@ -78,6 +79,70 @@ app.get("/user/:email", async (req, res) => {
   }
 });
 
+
+// ✅ Create a new post
+app.post("/posts", async (req, res) => {
+  try {
+    const { authorEmail, content } = req.body;
+
+    if (!authorEmail || !content) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const newPost = new Post({ authorEmail, content });
+    await newPost.save();
+
+    res.status(201).json({ message: "Post created successfully", post: newPost });
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ message: "Error creating post" });
+  }
+});
+
+// ✅ Get all posts (sorted by newest first)
+app.get("/posts", async (req, res) => {
+  try {
+    const posts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ message: "Error fetching posts" });
+  }
+});
+
+// ✅ Like a post
+app.put("/posts/:id/like", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    post.likes += 1;
+    await post.save();
+
+    res.status(200).json({ message: "Post liked", likes: post.likes });
+  } catch (error) {
+    console.error("Error liking post:", error);
+    res.status(500).json({ message: "Error liking post" });
+  }
+});
+
+// ✅ Add a comment to a post
+app.post("/posts/:id/comment", async (req, res) => {
+  try {
+    const { userEmail, text } = req.body;
+    const post = await Post.findById(req.params.id);
+
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    post.comments.push({ userEmail, text });
+    await post.save();
+
+    res.status(201).json({ message: "Comment added", post });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ message: "Error adding comment" });
+  }
+});
 
 const PORT = 5004;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

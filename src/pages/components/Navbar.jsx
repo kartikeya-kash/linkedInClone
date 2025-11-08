@@ -6,7 +6,7 @@ function Navbar() {
     <nav>
       <button onClick={() => navigate("/home")}>Home</button>
       <button onClick={() => navigate("/profile")}>Profile</button>
-      <button>New Post</button>
+      <button onClick={() => navigate("/newpost")}>New Post</button>
     </nav>
   );
 }
