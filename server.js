@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
     mongoose
-    .connect("mongodb://127.0.0.1:27017/lnclonedb")
+    .connect("mongodb+srv://lncloneuser:yQT6VdGGP5dtL2Kc@cluster0.dyayugv.mongodb.net/")
     .then(() => console.log("Connected to MongoDB: lnclonedb"))
     .catch((err) => console.error("MongoDB connection error:", err));
 
