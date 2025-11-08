@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose
+    mongoose
     .connect("mongodb://127.0.0.1:27017/lnclonedb")
     .then(() => console.log("Connected to MongoDB: lnclonedb"))
     .catch((err) => console.error("MongoDB connection error:", err));
@@ -21,13 +21,11 @@ mongoose
   try {
     const { email, password } = req.body;
 
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Simple password check (plain text for now)
     if (user.password !== password) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -39,6 +37,28 @@ mongoose
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+app.post("/signup", async (req, res) => {
+  try {
+    const { fullName, email, password } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Create new user
+    const newUser = new User({ fullName, email, password });
+    await newUser.save();
+
+    res.status(201).json({ message: "Signup successful", user: newUser });
+  } catch (error) {
+    console.error("Signup error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

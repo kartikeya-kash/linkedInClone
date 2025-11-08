@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Signup() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -9,20 +10,36 @@ function Signup() {
 
   const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5004/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Signup successful!");
+        navigate("/login");
+      } else {
+        alert(data.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <>
-      <h1>Sign Up Page</h1>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(
-            "Welcome " + formData.fullName + "! Your account has been created."
-          );
-          localStorage.setItem("userdata", JSON.stringify(formData));
-          navigate("/login");
-        }}
-      >
+      <h1>Signup Page</h1>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Full Name"
@@ -51,7 +68,9 @@ function Signup() {
         <button type="submit">Sign Up</button>
       </form>
 
-      <button onClick={() => navigate("/login")}>Login instead</button>
+      <button onClick={() => navigate("/login")}>
+        Already have an account?
+      </button>
     </>
   );
 }
