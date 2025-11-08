@@ -144,5 +144,47 @@ app.post("/posts/:id/comment", async (req, res) => {
   }
 });
 
+
+// ✅ Get all posts for a specific user
+app.get("/posts/user/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const posts = await Post.find({ authorEmail: email }).sort({ createdAt: -1 });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    res.status(500).json({ message: "Error fetching user posts" });
+  }
+});
+
+// ✅ Edit (update) a post
+app.put("/posts/:id", async (req, res) => {
+  try {
+    const { content } = req.body;
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { content },
+      { new: true }
+    );
+    if (!post) return res.status(404).json({ message: "Post not found" });
+    res.status(200).json({ message: "Post updated successfully", post });
+  } catch (error) {
+    console.error("Error updating post:", error);
+    res.status(500).json({ message: "Error updating post" });
+  }
+});
+
+// ✅ Delete a post
+app.delete("/posts/:id", async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ message: "Error deleting post" });
+  }
+});
+
 const PORT = 5004;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
