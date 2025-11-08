@@ -1,41 +1,47 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const storedData = localStorage.getItem("userdata");
+    try {
+      const response = await fetch("http://localhost:5004/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!storedData) {
-      alert("No user found! Please sign up first.");
-      return;
-    }
+      const data = await response.json();
 
-    const user = JSON.parse(storedData);
-
-    if (username === user.email && password === user.password) {
-      alert("Login Successful! Welcome " + user.fullName);
-      localStorage.setItem("isAuthenticated", "true");
-      navigate("/home");
-    } else {
-      alert("Invalid Credentials");
+      if (response.ok) {
+        alert(`Login Successful! Welcome ${data.user.fullName}`);
+        localStorage.setItem("isAuthenticated", "true");
+        navigate("/home");
+      } else {
+        alert(data.message || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again later.");
     }
   };
 
   return (
     <>
       <h1>Login Page</h1>
-
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
+          type="email"
           placeholder="Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <br />
         <input

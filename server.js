@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import User from './User.js';
 
 const app = express();
 app.use(express.json());
@@ -10,6 +11,36 @@ mongoose
     .connect("mongodb://127.0.0.1:27017/lnclonedb")
     .then(() => console.log("Connected to MongoDB: lnclonedb"))
     .catch((err) => console.error("MongoDB connection error:", err));
+
+    app.get('/test', (req, res) => {
+        res.send('server is running');
+    });
+
+
+    app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Simple password check (plain text for now)
+    if (user.password !== password) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    res.status(200).json({
+      message: "Login successful",
+      user: { fullName: user.fullName, email: user.email },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 
 const PORT = 5004;
