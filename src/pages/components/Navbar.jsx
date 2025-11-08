@@ -3,8 +3,7 @@ function Navbar() {
     <nav>
       <button>Home</button>
       <button>Profile</button>
-      <button>Messages</button>
-      <button>Settings</button>
+      <button>New Post</button>
     </nav>
   );
 }
