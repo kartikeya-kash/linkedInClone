@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Loader from "./components/Loader";
 
 function Profile() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -21,6 +23,7 @@ function Profile() {
     }
 
     const fetchUserData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `https://linkedinclone-1-hcwg.onrender.com/user/${email}`
@@ -30,9 +33,11 @@ function Profile() {
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
+      setLoading(false);
     };
 
     const fetchUserPosts = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `https://linkedinclone-1-hcwg.onrender.com/posts/user/${email}`
@@ -42,6 +47,7 @@ function Profile() {
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
+      setLoading(false);
     };
 
     fetchUserData();
@@ -56,6 +62,7 @@ function Profile() {
 
   const handleDelete = async (postId) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
+    setLoading(true);
     try {
       const response = await fetch(
         `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}`,
@@ -71,6 +78,7 @@ function Profile() {
     } catch (error) {
       console.error("Error deleting post:", error);
     }
+    setLoading(false);
   };
 
   const handleEdit = (post) => {
@@ -79,6 +87,7 @@ function Profile() {
   };
 
   const handleSaveEdit = async (postId) => {
+    setLoading(true);
     try {
       const response = await fetch(
         `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}`,
@@ -88,6 +97,7 @@ function Profile() {
           body: JSON.stringify({ content: editContent }),
         }
       );
+      setLoading(false);
 
       if (response.ok) {
         const updated = await response.json();
@@ -282,6 +292,7 @@ function Profile() {
           ))
         )}
       </div>
+      {loading && <Loader message="Loading..." />}
     </>
   );
 }

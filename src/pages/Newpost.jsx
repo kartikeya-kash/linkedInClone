@@ -1,10 +1,12 @@
 import Navbar from "./components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Loader from "./components/Loader";
 
 function Newpost() {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("isAuthenticated") !== "true") {
@@ -22,6 +24,8 @@ function Newpost() {
       navigate("/login");
       return;
     }
+
+    setLoading(true); // show loader before API call
 
     try {
       const response = await fetch(
@@ -45,6 +49,8 @@ function Newpost() {
     } catch (error) {
       console.error("Error submitting post:", error);
       alert("Something went wrong.");
+    } finally {
+      setLoading(false); // hide loader
     }
   };
 
@@ -182,6 +188,8 @@ function Newpost() {
           </p>
         </div>
       </div>
+
+      {loading && <Loader message="Posting your update..." />}
     </>
   );
 }

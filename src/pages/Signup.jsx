@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "./components/Loader";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -8,10 +9,12 @@ function Signup() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // show loader
 
     try {
       const response = await fetch(
@@ -36,12 +39,13 @@ function Signup() {
     } catch (error) {
       console.error("Signup error:", error);
       alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
-      {/* 💅 Inline CSS styling (same theme as Login & Landing) */}
       <style>
         {`
           .signup-container {
@@ -111,7 +115,6 @@ function Signup() {
         `}
       </style>
 
-      {/* 🎨 UI */}
       <div className="signup-container">
         <div className="signup-box">
           <h1 className="signup-title">Sign Up</h1>
@@ -157,6 +160,8 @@ function Signup() {
           </p>
         </div>
       </div>
+
+      {loading && <Loader message="Creating your account..." />}
     </>
   );
 }
