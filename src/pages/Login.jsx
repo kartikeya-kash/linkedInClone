@@ -28,6 +28,7 @@ function Login() {
 
       if (response.ok) {
         alert(`Login Successful! Welcome ${data.user.fullName}`);
+        localStorage.setItem("username", data.user.fullName);
         localStorage.setItem("email", email);
         localStorage.setItem("isAuthenticated", "true");
         navigate("/home");

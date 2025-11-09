@@ -7,21 +7,11 @@ function Navbar() {
 
   useEffect(() => {
     const email = localStorage.getItem("email");
-    if (!email) return;
+    const fullName = localStorage.getItem("username");
 
-    const fetchUser = async () => {
-      try {
-        const res = await fetch(`http://localhost:5004/user/${email}`);
-        if (!res.ok) throw new Error("Failed to fetch user");
-
-        const data = await res.json();
-        setUser({ fullName: data.fullName, email: data.email });
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      }
-    };
-
-    fetchUser();
+    if (email && fullName) {
+      setUser({ fullName, email });
+    }
   }, []);
 
   return (
