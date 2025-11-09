@@ -73,7 +73,7 @@ function Profile() {
       if (response.ok) {
         setPosts(posts.filter((post) => post._id !== postId));
       } else {
-        alert("Error deleting post");
+        alert("Error deleting post Try again.");
       }
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -106,7 +106,7 @@ function Profile() {
         );
         setEditMode(null);
       } else {
-        alert("Error updating post");
+        alert("Error updating post Try again.");
       }
     } catch (error) {
       console.error("Error saving edit:", error);

@@ -44,11 +44,11 @@ function Newpost() {
         setContent("");
         navigate("/home");
       } else {
-        alert(data.message || "Error creating post");
+        alert(data.message || "Error creating post Try agian.");
       }
     } catch (error) {
-      console.error("Error submitting post:", error);
-      alert("Something went wrong.");
+      console.error("Error submitting post: ", error);
+      alert("Something went wrong, try again.");
     } finally {
       setLoading(false); // hide loader
     }
