@@ -26,10 +26,10 @@ function Home() {
         );
         const data = await response.json();
         setPosts(data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
+      setLoading(false);
     };
 
     fetchPosts();

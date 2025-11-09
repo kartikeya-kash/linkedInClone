@@ -25,7 +25,6 @@ function Login() {
       );
 
       const data = await response.json();
-      setLoading(false);
 
       if (response.ok) {
         alert(`Login Successful! Welcome ${data.user.fullName}`);
@@ -39,6 +38,7 @@ function Login() {
       console.error("Login error:", error);
       alert("Something went wrong. Please try again later.");
     }
+    setLoading(false);
   };
 
   return (

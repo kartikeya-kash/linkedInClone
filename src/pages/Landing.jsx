@@ -19,7 +19,7 @@ function Landing() {
           console.error("Server wake-up failed:", err);
           setLoading(false);
         });
-    }, 700);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);

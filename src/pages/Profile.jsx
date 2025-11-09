@@ -97,7 +97,6 @@ function Profile() {
           body: JSON.stringify({ content: editContent }),
         }
       );
-      setLoading(false);
 
       if (response.ok) {
         const updated = await response.json();
@@ -111,6 +110,7 @@ function Profile() {
     } catch (error) {
       console.error("Error saving edit:", error);
     }
+    setLoading(false);
   };
 
   return (
