@@ -1,11 +1,31 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "./components/Loader";
 
 function Landing() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(true);
+
+      fetch("https://linkedinclone-1-hcwg.onrender.com/test")
+        .then((res) => res.text())
+        .then(() => {
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Server wake-up failed:", err);
+          setLoading(false);
+        });
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
-      {/* 🔹 Inline CSS styling inside <style> tag */}
       <style>
         {`
           .landing-container {
@@ -18,6 +38,7 @@ function Landing() {
             color: white;
             text-align: center;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
           }
 
           .landing-title {
@@ -75,7 +96,6 @@ function Landing() {
         `}
       </style>
 
-      {/* 🔹 HTML Content */}
       <div className="landing-container">
         <h1 className="landing-title">Welcome to LinkedIn Clone</h1>
         <p className="landing-subtitle">
@@ -91,6 +111,8 @@ function Landing() {
           </button>
         </div>
       </div>
+
+      {loading && <Loader message="Waking up the server..." />}
     </>
   );
 }
