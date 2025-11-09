@@ -3,13 +3,16 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import User from './User.js';
 import Post from './Post.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
     mongoose
-    .connect("mongodb+srv://lncloneuser:yQT6VdGGP5dtL2Kc@cluster0.dyayugv.mongodb.net/")
+    .connect(process.env.MONGO_URL)
     .then(() => console.log("Connected to MongoDB: lnclonedb"))
     .catch((err) => console.error("MongoDB connection error:", err));
 
