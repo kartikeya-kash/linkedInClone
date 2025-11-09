@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "./components/Loader";
 
 function Login() {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ function Login() {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const response = await fetch(
         "https://linkedinclone-1-hcwg.onrender.com/login",
         {
@@ -22,6 +25,7 @@ function Login() {
       );
 
       const data = await response.json();
+      setLoading(false);
 
       if (response.ok) {
         alert(`Login Successful! Welcome ${data.user.fullName}`);
@@ -110,6 +114,7 @@ function Login() {
       </style>
 
       {/* ✅ UI */}
+      {loading && <Loader message="Logging in..." />}
       <div className="login-container">
         <div className="login-box">
           <h1 className="login-title">Login</h1>
