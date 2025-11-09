@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from "./components/Loader";
 import Navbar from "./components/Navbar";
 
 function Home() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [commentTexts, setCommentTexts] = useState({});
 
@@ -16,6 +18,7 @@ function Home() {
       return;
     }
 
+    setLoading(true);
     const fetchPosts = async () => {
       try {
         const response = await fetch(
@@ -23,6 +26,7 @@ function Home() {
         );
         const data = await response.json();
         setPosts(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -32,6 +36,7 @@ function Home() {
   }, [navigate]);
 
   const handleLike = async (postId) => {
+    setLoading(true);
     try {
       const response = await fetch(
         `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}/like`,
@@ -49,6 +54,7 @@ function Home() {
     } catch (error) {
       console.error("Error liking post:", error);
     }
+    setLoading(false);
   };
 
   const handleComment = async (postId) => {
@@ -57,6 +63,7 @@ function Home() {
 
     if (!text || text.trim() === "") return alert("Comment cannot be empty!");
 
+    setLoading(true);
     try {
       const response = await fetch(
         `https://linkedinclone-1-hcwg.onrender.com/posts/${postId}/comment`,
@@ -84,6 +91,7 @@ function Home() {
     } catch (error) {
       console.error("Error adding comment:", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -226,6 +234,7 @@ function Home() {
           ))
         )}
       </div>
+      {loading && <Loader message="Loading..." />}
     </>
   );
 }
